@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Diabetes & Chronic Disease Community Survey Portal{% endblock %} | CSP</title>
+  <meta name="description" content="Community Survey Project portal for collecting and analyzing diabetes and chronic disease data for community health awareness and academic research.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_css %}{% endblock %}
+  <!-- Chart.js via CDN for interactive visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Academic research context banner -->
+  <div class="academic-notice-banner">
+    <div class="container notice-content">
+      <span>🔬 <strong>Community Survey Project (CSP) 2024:</strong> Community Health Awareness & Academic Research</span>
+    </div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="{{ url_for('home') }}" class="brand-link">
+        <div class="brand-icon-box">🩺</div>
+        <div class="brand-titles">
+          <span class="brand-name">Diabetes & Chronic Disease Portal</span>
+          <span class="brand-subtitle">Community Survey Project (CSP)</span>
+        </div>
+      </a>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">☰</button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="{{ url_for('home') }}" class="nav-link {% if active_page == 'home' %}active{% endif %}">Home</a></li>
+        <li><a href="{{ url_for('survey_page') }}" class="nav-link {% if active_page == 'survey' %}active{% endif %}">Take Survey</a></li>
+        <li><a href="{{ url_for('dashboard_page') }}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">Analytics Dashboard</a></li>
+        <li><a href="{{ url_for('about_page') }}" class="nav-link {% if active_page == 'about' %}active{% endif %}">About CSP</a></li>
+        {% if session.get('admin_logged_in') %}
+          <li><a href="{{ url_for('logout') }}" class="nav-link" style="color: var(--danger-color);">Logout (Admin)</a></li>
+        {% else %}
+          <li><a href="{{ url_for('login') }}" class="nav-link {% if active_page == 'login' %}active{% endif %}">Admin Login</a></li>
+        {% endif %}
+        <li><a href="{{ url_for('survey_page') }}" class="btn nav-btn">Participate Now</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Flash Messages / Toast Container -->
+  <div class="toast-container" id="toastContainer">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="toast toast-{{ category }}">
+            <span>{{ message }}</span>
+            <button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-weight:bold;margin-left:12px;">✕</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Main Body Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Professional Healthcare Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 class="footer-brand-title">Diabetes & Chronic Disease Community Survey Portal</h3>
+          <p class="footer-brand-desc">
+            An academic research initiative designed under the Community Survey Project (CSP) to systematically assess prevalence patterns, lifestyle habits, and healthcare accessibility across rural and urban communities.
+          </p>
+          <div class="pill-list">
+            <span class="pill-item">Academic Research</span>
+            <span class="pill-item">Informed Consent</span>
+            <span class="pill-item">Anonymized Data</span>
+            <span class="pill-item">Community Health</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Portal Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('home') }}">Home Page</a></li>
+            <li><a href="{{ url_for('survey_page') }}">Survey Questionnaire (32 Questions)</a></li>
+            <li><a href="{{ url_for('dashboard_page') }}">Research Dashboard</a></li>
+            <li><a href="{{ url_for('about_page') }}">Methodology & Ethics</a></li>
+            <li><a href="{{ url_for('login') }}">Admin Authentication</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Ethics & Privacy</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('about_page') }}#consent">Respondent Informed Consent</a></li>
+            <li><a href="{{ url_for('about_page') }}#privacy">Privacy Safeguards</a></li>
+            <li><a href="{{ url_for('about_page') }}#limitations">Epidemiologic Limitations</a></li>
+            <li><a href="{{ url_for('about_page') }}#coordinator">CSP Coordinator Guide</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="disclaimer-text">
+          <strong>Academic & Non-Diagnostic Disclaimer:</strong> This portal is developed strictly for community health research and academic survey data collection. It does not provide medical diagnoses, clinical evaluations, or therapeutic recommendations. All respondents are encouraged to consult qualified healthcare providers for medical advice.
+        </p>
+        <p>&copy; 2024 Community Survey Project (CSP). All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile navigation toggle
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileBtn && navLinks) {
+      mobileBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+      });
+    }
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

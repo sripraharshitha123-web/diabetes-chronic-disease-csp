@@ -1,0 +1,400 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics & Research Dashboard - CSP Portal{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container dashboard-wrapper">
+
+  <!-- Dashboard Top Header -->
+  <div class="dashboard-header">
+    <div class="dashboard-title-area">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+        <span class="academic-badge">Academic Research Dashboard</span>
+        {% if stats.synthetic_n > 0 %}
+          <span class="kpi-tag tag-synthetic">Includes {{ stats.synthetic_n }} Synthetic Demo Records</span>
+        {% endif %}
+      </div>
+      <h1>Community Survey Analytics &amp; Statistical Insights</h1>
+      <p>
+        Systematic descriptive epidemiology based on validated survey responses (Total Valid Sample: <strong>N = {{ stats.total_n }}</strong>).
+      </p>
+    </div>
+
+    <!-- Actions Group -->
+    <div class="dashboard-actions-group">
+      <a href="{{ url_for('export_csv') }}" class="btn btn-secondary" title="Download fully anonymized survey dataset for research analysis">
+        <span>📥 Export Anonymized CSV</span>
+      </a>
+
+      <!-- Seed Demo Data Form -->
+      <form method="POST" action="{{ url_for('seed_demo') }}" style="display: inline;">
+        <button type="submit" class="btn btn-outline-teal" onclick="return confirm('Generate 50 realistic synthetic records for demonstration? (Will be clearly tagged as synthetic)');">
+          <span>⚡ Seed 50 Demo Responses</span>
+        </button>
+      </form>
+
+      {% if stats.synthetic_n > 0 %}
+      <!-- Clear Demo Data Form -->
+      <form method="POST" action="{{ url_for('clear_demo') }}" style="display: inline;">
+        <button type="submit" class="btn btn-secondary" style="color: var(--danger-color); border-color: #fecaca;" onclick="return confirm('Remove all synthetic demonstration records from the database?');">
+          <span>🗑️ Clear Demo Data</span>
+        </button>
+      </form>
+      {% endif %}
+
+      <button type="button" class="btn btn-primary" onclick="window.location.reload();">
+        <span>🔄 Refresh</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Summary Cards with Clear Denominators -->
+  <div class="kpi-grid">
+    <!-- Total Respondents -->
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <div class="kpi-icon-box">👥</div>
+        <span class="kpi-tag">Sample Size</span>
+      </div>
+      <div class="kpi-value">{{ stats.total_n }}</div>
+      <div class="kpi-label">Total Valid Respondents</div>
+      <div class="kpi-subtext">
+        Genuine: <strong>{{ stats.genuine_n }}</strong> | Synthetic Demo: <strong>{{ stats.synthetic_n }}</strong>
+      </div>
+    </div>
+
+    <!-- Reported Diabetes Prevalence -->
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <div class="kpi-icon-box rose">🩸</div>
+        <span class="kpi-tag" style="background:#fee2e2; color:#991b1b;">Prevalence</span>
+      </div>
+      <div class="kpi-value">{{ stats.diabetes_prevalence }}%</div>
+      <div class="kpi-label">Self-Reported Diabetes</div>
+      <div class="kpi-subtext">
+        Denominator: Total respondents (N = {{ stats.total_n }})
+      </div>
+    </div>
+
+    <!-- Hypertension Prevalence -->
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <div class="kpi-icon-box amber">❤️</div>
+        <span class="kpi-tag" style="background:#fef3c7; color:#92400e;">Comorbidity</span>
+      </div>
+      <div class="kpi-value">{{ stats.hypertension_prevalence }}%</div>
+      <div class="kpi-label">Reported Hypertension</div>
+      <div class="kpi-subtext">
+        Denominator: Total respondents (N = {{ stats.total_n }})
+      </div>
+    </div>
+
+    <!-- Rural Representation -->
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <div class="kpi-icon-box blue">🌾</div>
+        <span class="kpi-tag" style="background:#eff6ff; color:#1d4ed8;">Demographics</span>
+      </div>
+      <div class="kpi-value">{{ stats.rural_pct }}%</div>
+      <div class="kpi-label">Rural Population Share</div>
+      <div class="kpi-subtext">
+        Urban: {{ stats.urban_pct }}% | Denominator: N = {{ stats.total_n }}
+      </div>
+    </div>
+
+    <!-- Sedentary Lifestyle -->
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <div class="kpi-icon-box">🪑</div>
+        <span class="kpi-tag">Lifestyle Risk</span>
+      </div>
+      <div class="kpi-value">{{ stats.sedentary_pct }}%</div>
+      <div class="kpi-label">Sedentary Activity Level</div>
+      <div class="kpi-subtext">
+        Mostly sitting | Denominator: N = {{ stats.total_n }}
+      </div>
+    </div>
+  </div>
+
+  {% if stats.total_n == 0 %}
+  <!-- Empty State Alert -->
+  <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 3rem; text-align: center; margin-bottom: 2rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+    <h3 style="font-size: 1.4rem; font-weight: 700; color: var(--navy-dark); margin-bottom: 8px;">No Survey Data Collected Yet</h3>
+    <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 1.5rem;">
+      Be the first to submit a community survey response, or generate 50 realistic demonstration records to explore the visualizations and data tables.
+    </p>
+    <div style="display: flex; gap: 12px; justify-content: center;">
+      <a href="{{ url_for('survey_page') }}" class="btn btn-primary">Take Survey Now</a>
+      <form method="POST" action="{{ url_for('seed_demo') }}">
+        <button type="submit" class="btn btn-secondary">Seed Demo Data (50)</button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+
+  <!-- Row 1: Primary Diagnostic & Comorbidity Visualizations -->
+  <div class="charts-grid-2col">
+    <!-- Chart 1: Reported Diabetes Diagnosis -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-title">Q9. Reported Diabetes Diagnosis</h3>
+          <p class="chart-subtitle">Distribution across diagnostic categories (N = {{ stats.total_n }})</p>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="diabetesDiagnosisChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Chart 2: Diagnosed Chronic Diseases -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-title">Q10. Reported Chronic Conditions</h3>
+          <p class="chart-subtitle">Frequency of diagnosed comorbid conditions (Multi-select)</p>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="chronicDiseasesChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Demographics & Geographical Distribution -->
+  <div class="charts-grid-2col">
+    <!-- Chart 3: Age Demographics -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-title">Q2. Age Group Representation</h3>
+          <p class="chart-subtitle">Age distribution of community survey participants</p>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="ageDistributionChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Chart 4: Location Type -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-title">Community Geographic Setting</h3>
+          <p class="chart-subtitle">Rural vs Urban vs Semi-Urban classification</p>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="locationTypeChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Lifestyle & Cross-Tabulation Visualizations -->
+  <div class="charts-grid-2col">
+    <!-- Chart 5: Exercise Frequency -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-title">Q12. Physical Activity Frequency</h3>
+          <p class="chart-subtitle">Reported exercise routines per week</p>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="exerciseFrequencyChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Chart 6: Age vs Reported Diabetes Cross-Tabulation -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-title">Age-Specific Reported Diabetes Rate</h3>
+          <p class="chart-subtitle">Percentage diagnosed within each age stratum (%)</p>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="crossAgeDiabetesChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 4: Nutrition & Healthcare Accessibility -->
+  <div class="charts-grid-2col">
+    <!-- Chart 7: Blood Sugar Testing Frequency -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-title">Q22. Routine Blood Sugar Screening</h3>
+          <p class="chart-subtitle">Screening interval patterns in community</p>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="bloodSugarChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Chart 8: Healthcare Accessibility -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-title">Q23. Healthcare Facility Accessibility</h3>
+          <p class="chart-subtitle">Reported distance to nearest clinic / hospital / PHC</p>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="healthcareAccessChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Academic Analysis & Descriptive Epidemiologic Findings -->
+  <div class="academic-analysis-box">
+    <div class="academic-header">
+      <div class="brand-icon-box" style="width: 36px; height: 36px; font-size: 18px;">📑</div>
+      <div>
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--navy-dark);">
+          Descriptive Epidemiological Analysis &amp; Field Patterns
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Key empirical associations observed from the collected community dataset (N = {{ stats.total_n }}).
+        </p>
+      </div>
+    </div>
+
+    <div class="academic-insights-grid">
+      <!-- Insight 1 -->
+      <div class="insight-item-card">
+        <h4 class="insight-title">1. Age-Associated Diabetes Gradient</h4>
+        <p class="insight-body">
+          A distinct upward gradient is observed across progressive age brackets. Respondents aged 46–60 years and Above 60 years exhibit substantially higher self-reported diabetes diagnosis frequencies compared to participants under 30 years.
+        </p>
+      </div>
+
+      <!-- Insight 2 -->
+      <div class="insight-item-card">
+        <h4 class="insight-title">2. Physical Inactivity &amp; Lifestyle Factors</h4>
+        <p class="insight-body">
+          Sedentary activity patterns ({{ stats.sedentary_pct }}% of total respondents) coincide with higher reported metabolic conditions and infrequent blood glucose testing, emphasizing the need for structured exercise advocacy.
+        </p>
+      </div>
+
+      <!-- Insight 3 -->
+      <div class="insight-item-card">
+        <h4 class="insight-title">3. Healthcare Distance &amp; Rural Access Disparities</h4>
+        <p class="insight-body">
+          In rural tracts ({{ stats.rural_pct }}% of respondents), distance to primary health centers (> 5 km) corresponds with testing only upon onset of acute illness rather than routine annual surveillance.
+        </p>
+      </div>
+    </div>
+
+    <!-- Academic Disclaimer Banner -->
+    <div class="academic-disclaimer">
+      <strong>⚠️ Methodological Note on Study Design &amp; Causality:</strong>
+      All metrics presented represent self-reported community survey responses collected for educational and exploratory awareness purposes. This cross-sectional observational design does not prove clinical etiology or measure general population-wide incidence rates. Figures must be interpreted as descriptive indicators within this sample.
+    </div>
+  </div>
+
+  <!-- Anonymized Survey Response Explorer Table -->
+  <div class="table-card">
+    <div class="chart-card-header" style="margin-bottom: 0.75rem;">
+      <div>
+        <h3 class="chart-title">Anonymized Response Explorer</h3>
+        <p class="chart-subtitle">Individual survey submissions (Strictly anonymized for academic audit)</p>
+      </div>
+      <a href="{{ url_for('export_csv') }}" class="btn btn-outline-teal" style="font-size: 0.85rem; padding: 6px 14px;">
+        Export Complete CSV
+      </a>
+    </div>
+
+    <!-- Table Filters -->
+    <div class="table-controls-bar">
+      <div class="filters-row">
+        <input type="text" id="tableSearch" class="search-input" placeholder="Search Reference ID / Location..." style="min-width: 240px;">
+        <select id="locationFilter" class="filter-select">
+          <option value="">All Locations</option>
+          <option value="Rural">Rural</option>
+          <option value="Urban">Urban</option>
+          <option value="Semi-Urban">Semi-Urban</option>
+        </select>
+        <select id="diabetesFilter" class="filter-select">
+          <option value="">All Diabetes Statuses</option>
+          <option value="diagnosed">Diagnosed (Yes)</option>
+          <option value="not_diagnosed">Not Diagnosed (No)</option>
+          <option value="not_tested">Not Tested Yet</option>
+        </select>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--text-light);" id="recordsCountText">
+        Showing records
+      </div>
+    </div>
+
+    <!-- Response Table -->
+    <div class="table-responsive">
+      <table class="data-table" id="responsesDataTable">
+        <thead>
+          <tr>
+            <th>Ref Code</th>
+            <th>Type</th>
+            <th>Location / Ward</th>
+            <th>Age Group</th>
+            <th>Gender</th>
+            <th>Education</th>
+            <th>Diagnosed Diabetes</th>
+            <th>Exercise</th>
+            <th>Data Tag</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="table-pagination">
+      <span id="paginationInfo">Page 1 of 1</span>
+      <div class="page-btn-group">
+        <button type="button" class="page-btn" id="prevPageBtn" disabled>&larr; Previous</button>
+        <button type="button" class="page-btn" id="nextPageBtn">Next &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+
+</div>
+
+<!-- Single Response Inspection Modal -->
+<div class="modal-backdrop" id="detailModal">
+  <div class="modal-box" style="max-width: 720px;">
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-title" id="detailRefId">Survey Response Details</h3>
+        <span style="font-size: 0.8rem; color: var(--text-light);" id="detailTimestamp"></span>
+      </div>
+      <button type="button" class="modal-close-btn" id="closeDetailModal">&times;</button>
+    </div>
+    <div class="modal-body" id="detailModalBody" style="font-size: 0.9rem;">
+      <!-- Populated dynamically -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="closeDetailBtn">Close</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Pass backend statistics JSON to JavaScript -->
+<script>
+  window.SURVEY_STATS = {{ stats|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

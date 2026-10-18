@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Diabetes & Chronic Disease Community Survey Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-text-content">
+        <div class="hero-badge">
+          <span>🩺 Academic Research & Community Health</span>
+        </div>
+        <h1 class="hero-title">
+          Diabetes &amp; Chronic Disease <span>Community Survey Portal</span>
+        </h1>
+        <p class="hero-description">
+          A dedicated academic research platform under the <strong>Community Survey Project (CSP)</strong>. Designed to gather, analyze, and present epidemiological insights on diabetes, hypertension, and chronic conditions across rural, urban, and semi-urban communities.
+        </p>
+        <div class="hero-cta-group">
+          <a href="{{ url_for('survey_page') }}" class="btn btn-primary">
+            <span>📋 Fill Survey Questionnaire</span>
+          </a>
+          <a href="{{ url_for('dashboard_page') }}" class="btn btn-secondary">
+            <span>📊 View Research Dashboard</span>
+          </a>
+          <a href="{{ url_for('about_page') }}" class="btn btn-outline-teal">
+            <span>ℹ️ About CSP Project</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Live Quick Stat Widget -->
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <h2 class="hero-card-title">Live Survey Metrics</h2>
+          <div class="live-badge">
+            <span class="live-dot"></span>
+            <span>Real-time</span>
+          </div>
+        </div>
+        <div class="quick-stats-grid">
+          <div class="quick-stat-item">
+            <div class="quick-stat-val">{{ stats.total_n }}</div>
+            <div class="quick-stat-label">Total Responses (N)</div>
+          </div>
+          <div class="quick-stat-item">
+            <div class="quick-stat-val">{{ stats.diabetes_prevalence }}%</div>
+            <div class="quick-stat-label">Reported Diabetes</div>
+          </div>
+          <div class="quick-stat-item">
+            <div class="quick-stat-val">{{ stats.rural_pct }}%</div>
+            <div class="quick-stat-label">Rural Respondents</div>
+          </div>
+          <div class="quick-stat-item">
+            <div class="quick-stat-val">{{ stats.sedentary_pct }}%</div>
+            <div class="quick-stat-label">Sedentary Lifestyle</div>
+          </div>
+        </div>
+        <div style="margin-top: 1.25rem; font-size: 0.8rem; color: var(--text-light); text-align: center;">
+          * Self-reported descriptive data for academic evaluation.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Core Project Objectives -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Project Overview</span>
+      <h2 class="section-title">Core Objectives &amp; Survey Pillars</h2>
+      <p class="section-desc">
+        Bridging the gap between grassroots community health patterns and evidence-based academic research.
+      </p>
+    </div>
+
+    <div class="cards-grid">
+      <!-- Feature Card 1 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">📝</div>
+        <h3 class="feature-card-title">Standardized 32-Question Tool</h3>
+        <p class="feature-card-text">
+          Direct digital implementation of the official CSP Questionnaire covering 9 vital sections: Demographics, Awareness, Health Status, Lifestyle, Diet, Medical Checkups, Healthcare Access, Daily Impact, and Community Suggestions.
+        </p>
+        <a href="{{ url_for('survey_page') }}" class="feature-link">Open Questionnaire &rarr;</a>
+      </div>
+
+      <!-- Feature Card 2 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">📈</div>
+        <h3 class="feature-card-title">Academic Analytics Dashboard</h3>
+        <p class="feature-card-text">
+          Interactive Chart.js visualizations tracking disease prevalence, age brackets, rural vs urban disparities, physical activity correlations, and healthcare distance gradients with mathematically defined denominators.
+        </p>
+        <a href="{{ url_for('dashboard_page') }}" class="feature-link">Explore Visualizations &rarr;</a>
+      </div>
+
+      <!-- Feature Card 3 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">🔒</div>
+        <h3 class="feature-card-title">Ethics, Consent &amp; Privacy</h3>
+        <p class="feature-card-text">
+          Explicit informed consent protocol before questionnaire submission. Zero requirement for respondent personal identity (Q1 is optional), and strictly anonymized data downloads for academic defense.
+        </p>
+        <a href="{{ url_for('about_page') }}" class="feature-link">Read Privacy Policy &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Methodology Highlight Banner -->
+    <div class="methodology-banner">
+      <div class="methodology-grid">
+        <div>
+          <h3 class="methodology-title">Designed for Rural &amp; Urban Community Fieldwork</h3>
+          <p class="methodology-text">
+            The questionnaire is intentionally simplified for respondents across all education levels, while maintaining rigorous epidemiological classifications. Surveyors and community volunteers can complete entries on mobile devices with instant offline-tolerant validation.
+          </p>
+          <a href="{{ url_for('survey_page') }}" class="btn btn-primary" style="background-color: var(--teal-accent); color: var(--navy-dark); font-weight: 700;">
+            Start Community Survey Entry
+          </a>
+        </div>
+        <div>
+          <div style="background: rgba(255, 255, 255, 0.08); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.15);">
+            <h4 style="color: #ffffff; margin-bottom: 12px; font-size: 1.1rem;">9 Questionnaire Dimensions:</h4>
+            <ul style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.7; padding-left: 20px;">
+              <li><strong>Section 1:</strong> Basic Demographic Information (Q1–Q5)</li>
+              <li><strong>Section 2:</strong> Awareness of Diabetes &amp; Chronic Diseases (Q6–Q8)</li>
+              <li><strong>Section 3:</strong> Health Status &amp; Family History (Q9–Q11)</li>
+              <li><strong>Section 4:</strong> Lifestyle, Physical Activity &amp; Habits (Q12–Q17)</li>
+              <li><strong>Section 5:</strong> Diet, Sugar &amp; Nutrition (Q18–Q20)</li>
+              <li><strong>Section 6:</strong> Checkups, Blood Sugar &amp; Access (Q21–Q24)</li>
+              <li><strong>Section 7:</strong> Impact on Daily Life &amp; Expenses (Q25–Q27)</li>
+              <li><strong>Section 8:</strong> Community Awareness &amp; Programs (Q28–Q29)</li>
+              <li><strong>Section 9:</strong> Prevention Suggestions &amp; Future Willingness (Q30–Q32)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

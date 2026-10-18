@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Survey Submitted Successfully - CSP Portal{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 760px; padding: 4rem 1.25rem;">
+  <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 3rem; text-align: center; box-shadow: var(--shadow-lg);">
+    
+    <div style="width: 72px; height: 72px; background: #ecfdf5; color: var(--success-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 1.5rem; border: 2px solid #a7f3d0;">
+      ✓
+    </div>
+
+    <h1 style="font-size: 2.1rem; font-weight: 800; color: var(--navy-dark); margin-bottom: 0.5rem;">
+      Thank You for Your Valuable Participation!
+    </h1>
+    <p style="color: var(--teal-dark); font-weight: 600; font-size: 1.05rem; margin-bottom: 1.5rem;">
+      Your responses contribute to a healthier community. 💙
+    </p>
+
+    <!-- Reference ID Badge -->
+    <div style="background: var(--teal-light); border: 1px dashed var(--teal-dark); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 2rem; display: inline-block; width: 100%; max-width: 480px;">
+      <div style="font-size: 0.82rem; font-weight: 700; color: var(--teal-deep); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">
+        Survey Reference Code
+      </div>
+      <div style="font-size: 1.4rem; font-weight: 800; color: var(--navy-dark); font-family: monospace;">
+        {{ reference_id }}
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">
+        Preserve this reference ID for official survey audit purposes.
+      </div>
+    </div>
+
+    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem; text-align: left; background: #f8fafc; padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--teal-dark);">
+      <strong>Confidentiality Notice:</strong> Your submission has been securely recorded. All data is anonymized and used exclusively for academic research and community health awareness under the Community Survey Project (CSP).
+    </p>
+
+    <!-- Health Awareness Message -->
+    <div style="text-align: left; margin-bottom: 2.5rem; background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+      <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--navy-dark); margin-bottom: 8px;">
+        🌿 Essential Chronic Disease Prevention Tips
+      </h3>
+      <ul style="font-size: 0.9rem; color: var(--text-muted); padding-left: 20px; line-height: 1.7;">
+        <li><strong>Stay Active:</strong> Aim for at least 30 minutes of moderate physical activity (brisk walking, cycling) 5 days a week.</li>
+        <li><strong>Balanced Diet:</strong> Increase daily intake of fresh vegetables, whole grains, and lentils; cut down on sugary beverages and refined carbs.</li>
+        <li><strong>Regular Screening:</strong> Check blood glucose and blood pressure periodically, especially if you have a family history or are above 30 years.</li>
+        <li><strong>Early Detection:</strong> Routine health checkups help identify pre-diabetes before complications arise.</li>
+      </ul>
+    </div>
+
+    <!-- Actions -->
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="{{ url_for('survey_page') }}" class="btn btn-secondary">
+        📝 Submit Another Response
+      </a>
+      <a href="{{ url_for('dashboard_page') }}" class="btn btn-primary">
+        📊 View Analytics Dashboard
+      </a>
+      <a href="{{ url_for('home') }}" class="btn btn-outline-teal">
+        🏠 Back to Home
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

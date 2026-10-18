@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}About CSP & Research Methodology{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 960px; padding: 3rem 1.25rem 5rem;">
+
+  <!-- Page Title Header -->
+  <div style="margin-bottom: 2.5rem; text-align: center;">
+    <span class="hero-badge">Academic Documentation</span>
+    <h1 style="font-size: 2.3rem; font-weight: 800; color: var(--navy-dark); margin: 0.5rem 0;">
+      Community Survey Project (CSP)
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 700px; margin: 0 auto;">
+      Standardized investigation of diabetes prevalence, chronic illness awareness, lifestyle correlates, and healthcare accessibility.
+    </p>
+  </div>
+
+  <!-- Section 1: Objective & Scope -->
+  <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+    <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--navy-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+      <span style="color: var(--teal-dark);">🎯</span> Project Objectives &amp; Academic Scope
+    </h2>
+    <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+      Non-communicable diseases (NCDs), particularly Type 2 Diabetes and Hypertension, represent an escalating healthcare burden across developing and transitioning regions. The <strong>Diabetes &amp; Chronic Disease Community Survey Portal</strong> serves as the unified digital instrument for the Community Survey Project (CSP) 2024.
+    </p>
+    <ul style="color: var(--navy-dark); line-height: 1.8; padding-left: 24px; font-size: 0.95rem;">
+      <li><strong>Standardized Field Data Collection:</strong> Digitize the 32-question survey instrument across diverse community strata (rural hamlets, urban wards, and semi-urban towns).</li>
+      <li><strong>Awareness &amp; Early Screening Profiling:</strong> Measure community awareness levels, source of health knowledge, and blood glucose testing frequency.</li>
+      <li><strong>Lifestyle Risk Identification:</strong> Profile physical activity habits, dietary sugar intake, smoking, alcohol use, and sleep duration.</li>
+      <li><strong>Healthcare Barrier Mapping:</strong> Assess geographic distance to Primary Healthcare Centers (PHCs) and financial expenditure on chronic medication.</li>
+    </ul>
+  </div>
+
+  <!-- Section 2: Ethics, Consent & Privacy -->
+  <div id="consent" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+    <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--navy-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+      <span style="color: var(--teal-dark);">🔒</span> Ethics, Informed Consent &amp; Privacy Safeguards
+    </h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+      <div style="background: var(--bg-page); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--navy-dark); margin-bottom: 6px;">Informed Consent Protocol</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+          Respondents are presented with the clear scope and voluntary nature of the questionnaire prior to submission. Every respondent must actively check the declaration box before their responses are accepted.
+        </p>
+      </div>
+
+      <div style="background: var(--bg-page); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--navy-dark); margin-bottom: 6px;">Anonymity &amp; Privacy By Design</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+          Personal names are completely optional (Q1). No phone numbers, national IDs, or street addresses are collected. In the research CSV export, respondent names are entirely excluded, and IP addresses are cryptographically hashed.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Epidemiologic Limitations & Academic Disclaimer -->
+  <div id="limitations" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+    <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--navy-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+      <span style="color: var(--warning-color);">⚠️</span> Study Limitations &amp; Methodological Disclaimers
+    </h2>
+    <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+      In accordance with standard academic research ethics, the following principles govern data interpretation on this platform:
+    </p>
+    <div style="background: #fffbeb; border-left: 4px solid var(--warning-color); padding: 1rem 1.25rem; border-radius: var(--radius-sm); font-size: 0.9rem; color: #92400e; line-height: 1.6;">
+      <p style="margin-bottom: 8px;"><strong>1. Self-Reported Diagnoses:</strong> Metrics for diabetes and hypertension represent self-reported recall of prior medical diagnoses or perceptions, rather than clinical blood glucose or HbA1c laboratory measurements.</p>
+      <p style="margin-bottom: 8px;"><strong>2. Observational Design:</strong> Cross-sectional community convenience sampling cannot establish longitudinal causality between lifestyle behaviors (e.g., exercise, diet) and chronic disease emergence.</p>
+      <p><strong>3. Non-Diagnostic Purpose:</strong> This software portal and its analytics do not dispense medical diagnoses, prescriptions, or clinical guidance. Patients require clinical evaluation by licensed medical personnel.</p>
+    </div>
+  </div>
+
+  <!-- Section 4: Coordinator Demonstration Guide -->
+  <div id="coordinator" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+    <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--navy-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+      <span style="color: var(--teal-dark);">🎓</span> CSP Coordinator Demonstration Guide
+    </h2>
+    <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+      Follow these concise steps to showcase the full-stack portal to your CSP project coordinator, academic evaluator, or review committee:
+    </p>
+    
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; gap: 14px; align-items: flex-start;">
+        <span style="background: var(--teal-dark); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.85rem;">1</span>
+        <div>
+          <strong style="color: var(--navy-dark);">Show the Project Homepage:</strong>
+          <span style="color: var(--text-muted); display: block; font-size: 0.9rem;">Highlight the healthcare theme, live real-time metrics widget, 9 questionnaire dimensions, and academic objectives.</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 14px; align-items: flex-start;">
+        <span style="background: var(--teal-dark); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.85rem;">2</span>
+        <div>
+          <strong style="color: var(--navy-dark);">Demonstrate Survey Submission &amp; Validation:</strong>
+          <span style="color: var(--text-muted); display: block; font-size: 0.9rem;">Open <a href="{{ url_for('survey_page') }}" style="color: var(--teal-dark);">Take Survey</a>. Show the 10-step wizard with animated progress bar. Try skipping a mandatory question (e.g. Q2 Age) to demonstrate input validation and error feedback.</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 14px; align-items: flex-start;">
+        <span style="background: var(--teal-dark); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.85rem;">3</span>
+        <div>
+          <strong style="color: var(--navy-dark);">Review Answers Before Final Submission:</strong>
+          <span style="color: var(--text-muted); display: block; font-size: 0.9rem;">On the final step, click "Review All Answers" to trigger the review modal displaying all 32 questions. Provide consent and submit to view the confirmation page with reference ID.</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 14px; align-items: flex-start;">
+        <span style="background: var(--teal-dark); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.85rem;">4</span>
+        <div>
+          <strong style="color: var(--navy-dark);">Explore the Research Analytics Dashboard:</strong>
+          <span style="color: var(--text-muted); display: block; font-size: 0.9rem;">Navigate to <a href="{{ url_for('dashboard_page') }}" style="color: var(--teal-dark);">Analytics Dashboard</a>. Show the 8 interactive Chart.js visualizations (Diabetes breakdown, Comorbidities, Age groups, Rural vs Urban split, Cross-tabulation, PHC distance). Point out clearly defined denominators ($N$).</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 14px; align-items: flex-start;">
+        <span style="background: var(--teal-dark); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.85rem;">5</span>
+        <div>
+          <strong style="color: var(--navy-dark);">Inspect Response Records &amp; Export Anonymized CSV:</strong>
+          <span style="color: var(--text-muted); display: block; font-size: 0.9rem;">Filter responses by Rural/Urban or Diabetes status in the data table. Click "Inspect" to view full answers. Click "Export Anonymized CSV" to demonstrate clean, privacy-compliant CSV generation for academic research.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

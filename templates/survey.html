@@ -1,0 +1,794 @@
+{% extends "base.html" %}
+
+{% block title %}Community Survey - 32-Question Questionnaire{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/survey.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container survey-wrapper">
+
+  <!-- Header Card with Official Instructions -->
+  <div class="survey-header-card">
+    <div class="survey-meta-badge">COMMUNITY SURVEY PROJECT (CSP)</div>
+    <h1 class="survey-main-title">Questionnaire on Incidence of Diabetes and Chronic Diseases</h1>
+    <p style="color: var(--teal-dark); font-weight: 600; font-size: 0.95rem;">
+      Conducted for Community Health Awareness &amp; Research | 2024
+    </p>
+
+    <div class="survey-instructions">
+      <strong>ℹ️ Instructions to Respondents:</strong>
+      <ol class="instruction-list">
+        <li>This questionnaire is meant for research and community health awareness purposes only.</li>
+        <li>Your personal information will be kept strictly confidential.</li>
+        <li>Please select the appropriate option or fill in the blank spaces provided.</li>
+        <li>Answer all questions to the best of your knowledge. There are no right or wrong answers.</li>
+        <li>Questions marked with <span class="mandatory-star">*</span> are mandatory.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Sticky Progress Bar & Step Tracker -->
+  <div class="survey-progress-container" id="surveyProgressContainer">
+    <div class="progress-header">
+      <span class="progress-section-name" id="progressSectionName">Section 1: Basic Information</span>
+      <span class="progress-percentage" id="progressPercentage">11% Completed</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="section-steps-row">
+      <button type="button" class="step-indicator active" data-step="1">1. Basic Info</button>
+      <button type="button" class="step-indicator" data-step="2">2. Awareness</button>
+      <button type="button" class="step-indicator" data-step="3">3. Health Status</button>
+      <button type="button" class="step-indicator" data-step="4">4. Lifestyle</button>
+      <button type="button" class="step-indicator" data-step="5">5. Diet</button>
+      <button type="button" class="step-indicator" data-step="6">6. Checkups</button>
+      <button type="button" class="step-indicator" data-step="7">7. Daily Impact</button>
+      <button type="button" class="step-indicator" data-step="8">8. Community</button>
+      <button type="button" class="step-indicator" data-step="9">9. Suggestions</button>
+      <button type="button" class="step-indicator" data-step="10">10. Consent</button>
+    </div>
+  </div>
+
+  <!-- Survey Form -->
+  <form id="surveyForm" method="POST" action="{{ url_for('submit_survey') }}">
+    
+    <!-- ==========================================
+         SECTION 1 — BASIC INFORMATION
+         ========================================== -->
+    <div class="survey-section-card active" data-section="1">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Section 1</span>
+        <h2 class="section-heading-title">Basic Information</h2>
+      </div>
+
+      <!-- Location Type (Survey Metadata) -->
+      <div class="question-block" id="block_location_type">
+        <label class="question-label">
+          Location Type <span class="mandatory-star">*</span>
+        </label>
+        <div class="options-grid">
+          <label class="custom-option">
+            <input type="radio" name="location_type" value="Rural" checked>
+            <span class="option-indicator"></span>
+            <span class="option-text">Rural (Village / Panchayat)</span>
+          </label>
+          <label class="custom-option">
+            <input type="radio" name="location_type" value="Urban">
+            <span class="option-indicator"></span>
+            <span class="option-text">Urban (City / Municipality)</span>
+          </label>
+          <label class="custom-option">
+            <input type="radio" name="location_type" value="Semi-Urban">
+            <span class="option-indicator"></span>
+            <span class="option-text">Semi-Urban (Town / Outskirts)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Survey Location / Ward -->
+      <div class="question-block" id="block_survey_location">
+        <label class="question-label" for="survey_location">
+          Survey Location / Village / Ward <span style="font-size:0.85rem; color:var(--text-light); font-weight:normal;">(For official/surveyor reference)</span>
+        </label>
+        <input type="text" id="survey_location" name="survey_location" class="form-input-text" placeholder="e.g. Ward 12 / Kallur Village">
+      </div>
+
+      <!-- Q1 -->
+      <div class="question-block" id="block_q1_full_name">
+        <label class="question-label" for="q1_full_name">
+          Q1. Name of Respondent (Optional)
+        </label>
+        <div class="question-subtext">You are not required to provide your name. Kept strictly confidential.</div>
+        <input type="text" id="q1_full_name" name="q1_full_name" class="form-input-text" placeholder="Full Name (Optional)">
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-block" id="block_q2_age_group">
+        <label class="question-label">
+          Q2. Age <span class="mandatory-star">*</span>
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Below 18 years", "18 – 30 years", "31 – 45 years", "46 – 60 years", "Above 60 years"] %}
+          <label class="custom-option">
+            <input type="radio" name="q2_age_group" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-block" id="block_q3_gender">
+        <label class="question-label">
+          Q3. Gender <span class="mandatory-star">*</span>
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Male", "Female", "Other / Prefer not to say"] %}
+          <label class="custom-option">
+            <input type="radio" name="q3_gender" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-block" id="block_q4_occupation">
+        <label class="question-label">
+          Q4. Occupation
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Student", "Farmer / Agricultural Worker", "Government Employee", "Private Sector Employee", "Self-Employed / Business", "Homemaker", "Retired", "Unemployed"] %}
+          <label class="custom-option">
+            <input type="radio" name="q4_occupation" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-block" id="block_q5_education">
+        <label class="question-label">
+          Q5. Highest Education Level Completed <span class="mandatory-star">*</span>
+        </label>
+        <div class="options-grid">
+          {% for opt in ["No formal education", "Primary School (up to Class 5)", "Secondary School (Class 6–10)", "Higher Secondary / Intermediate", "Graduate (Degree)", "Post-Graduate or Higher"] %}
+          <label class="custom-option">
+            <input type="radio" name="q5_education" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation for Section 1 -->
+      <div class="survey-nav-bar">
+        <div></div>
+        <button type="button" class="btn btn-primary next-step-btn" data-next="2">Next: Section 2 &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 2 — AWARENESS OF DIABETES
+         ========================================== -->
+    <div class="survey-section-card" data-section="2">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Section 2</span>
+        <h2 class="section-heading-title">Awareness of Diabetes and Chronic Diseases</h2>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question-block" id="block_q6_heard_diabetes">
+        <label class="question-label">
+          Q6. Have you ever heard about Diabetes? <span class="mandatory-star">*</span>
+        </label>
+        <div class="options-grid">
+          <label class="custom-option">
+            <input type="radio" name="q6_heard_diabetes" value="Yes">
+            <span class="option-indicator"></span>
+            <span class="option-text">Yes</span>
+          </label>
+          <label class="custom-option">
+            <input type="radio" name="q6_heard_diabetes" value="No">
+            <span class="option-indicator"></span>
+            <span class="option-text">No</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question-block" id="block_q7_aware_chronic_diseases">
+        <label class="question-label">
+          Q7. Are you aware of other chronic diseases? (Select all that apply)
+        </label>
+        <div class="question-subtext">Check all conditions you recognize or have heard about.</div>
+        <div class="options-grid">
+          {% for opt in ["Heart Disease (Hypertension / CVD)", "Kidney Disease (CKD)", "Cancer", "Asthma / COPD", "Thyroid Disorders", "Obesity / Metabolic Syndrome", "Arthritis / Bone Diseases", "None of the above"] %}
+          <label class="custom-option">
+            <input type="checkbox" name="q7_aware_chronic_diseases" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="question-block" id="block_q8_first_learned_source">
+        <label class="question-label">
+          Q8. How did you first learn about diabetes or chronic diseases? <span class="mandatory-star">*</span>
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Doctor / Health Worker", "Television / Radio", "Internet / Social Media", "Newspaper / Magazines", "Family / Friends", "School / College", "Health Camp / Awareness Programme", "Never heard / Not aware"] %}
+          <label class="custom-option">
+            <input type="radio" name="q8_first_learned_source" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation for Section 2 -->
+      <div class="survey-nav-bar">
+        <button type="button" class="btn btn-secondary prev-step-btn" data-prev="1">&larr; Back</button>
+        <button type="button" class="btn btn-primary next-step-btn" data-next="3">Next: Section 3 &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 3 — HEALTH STATUS
+         ========================================== -->
+    <div class="survey-section-card" data-section="3">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Section 3</span>
+        <h2 class="section-heading-title">Health Status</h2>
+      </div>
+
+      <!-- Q9 -->
+      <div class="question-block" id="block_q9_diagnosed_diabetes">
+        <label class="question-label">
+          Q9. Have you ever been diagnosed with Diabetes? <span class="mandatory-star">*</span>
+        </label>
+        <div class="options-stack">
+          {% for opt in ["Yes, Type 1 Diabetes", "Yes, Type 2 Diabetes", "Yes, but type not known", "No", "Not tested yet"] %}
+          <label class="custom-option">
+            <input type="radio" name="q9_diagnosed_diabetes" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="question-block" id="block_q10_diagnosed_chronic_diseases">
+        <label class="question-label">
+          Q10. Have you been diagnosed with any chronic disease? (Select all that apply)
+        </label>
+        <div class="options-grid">
+          {% for opt in ["High Blood Pressure (Hypertension)", "Heart Disease", "Kidney Disease", "Asthma / Breathing Problem", "Thyroid Problem", "Cancer", "Obesity", "No chronic disease diagnosed"] %}
+          <label class="custom-option">
+            <input type="checkbox" name="q10_diagnosed_chronic_diseases" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="question-block" id="block_q11_family_history">
+        <label class="question-label">
+          Q11. Does your family have a history of diabetes or chronic diseases?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Yes — Diabetes", "Yes — Heart Disease", "Yes — Cancer", "Yes — Other Chronic Disease", "No family history", "Not aware / Don't know"] %}
+          <label class="custom-option">
+            <input type="checkbox" name="q11_family_history" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation for Section 3 -->
+      <div class="survey-nav-bar">
+        <button type="button" class="btn btn-secondary prev-step-btn" data-prev="2">&larr; Back</button>
+        <button type="button" class="btn btn-primary next-step-btn" data-next="4">Next: Section 4 &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 4 — LIFESTYLE AND HABITS
+         ========================================== -->
+    <div class="survey-section-card" data-section="4">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Section 4</span>
+        <h2 class="section-heading-title">Lifestyle and Habits</h2>
+      </div>
+
+      <!-- Q12 -->
+      <div class="question-block" id="block_q12_exercise_frequency">
+        <label class="question-label">
+          Q12. How often do you exercise or engage in physical activity? <span class="mandatory-star">*</span>
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Daily (≥ 30 minutes)", "4–6 times per week", "2–3 times per week", "Once a week", "Rarely", "Never"] %}
+          <label class="custom-option">
+            <input type="radio" name="q12_exercise_frequency" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q13 -->
+      <div class="question-block" id="block_q13_daily_activity_level">
+        <label class="question-label">
+          Q13. How would you describe your daily physical activity level?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Sedentary (mostly sitting)", "Lightly active (some walking)", "Moderately active (regular movement)", "Very active (physical labour / sport)"] %}
+          <label class="custom-option">
+            <input type="radio" name="q13_daily_activity_level" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q14 -->
+      <div class="question-block" id="block_q14_sugary_intake_frequency">
+        <label class="question-label">
+          Q14. How frequently do you consume sugary foods, sweets, or sweet drinks?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Multiple times a day", "Once daily", "3–5 times per week", "Occasionally", "Rarely / Never"] %}
+          <label class="custom-option">
+            <input type="radio" name="q14_sugary_intake_frequency" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q15 -->
+      <div class="question-block" id="block_q15_smoking_status">
+        <label class="question-label">
+          Q15. Do you currently smoke tobacco (cigarettes, bidi, gutka, etc.)?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Yes, daily", "Yes, occasionally", "I quit smoking", "No, never"] %}
+          <label class="custom-option">
+            <input type="radio" name="q15_smoking_status" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q16 -->
+      <div class="question-block" id="block_q16_alcohol_consumption">
+        <label class="question-label">
+          Q16. Do you consume alcohol?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Yes, daily", "Yes, occasionally (weekends)", "Rarely", "No, I don't drink"] %}
+          <label class="custom-option">
+            <input type="radio" name="q16_alcohol_consumption" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q17 -->
+      <div class="question-block" id="block_q17_sleep_hours">
+        <label class="question-label">
+          Q17. On average, how many hours do you sleep per night?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Less than 5 hours", "5 – 6 hours", "7 – 8 hours (Recommended)", "More than 8 hours"] %}
+          <label class="custom-option">
+            <input type="radio" name="q17_sleep_hours" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation for Section 4 -->
+      <div class="survey-nav-bar">
+        <button type="button" class="btn btn-secondary prev-step-btn" data-prev="3">&larr; Back</button>
+        <button type="button" class="btn btn-primary next-step-btn" data-next="5">Next: Section 5 &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 5 — DIET AND NUTRITION
+         ========================================== -->
+    <div class="survey-section-card" data-section="5">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Section 5</span>
+        <h2 class="section-heading-title">Diet and Nutrition</h2>
+      </div>
+
+      <!-- Q18 -->
+      <div class="question-block" id="block_q18_diet_type">
+        <label class="question-label">
+          Q18. What type of diet do you primarily follow?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Vegetarian", "Non-Vegetarian", "Mixed (Both Veg & Non-Veg)", "Vegan"] %}
+          <label class="custom-option">
+            <input type="radio" name="q18_diet_type" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q19 -->
+      <div class="question-block" id="block_q19_fruits_veg_frequency">
+        <label class="question-label">
+          Q19. How often do you eat fruits and vegetables?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Every day", "4–5 times per week", "2–3 times per week", "Once a week", "Rarely / Never"] %}
+          <label class="custom-option">
+            <input type="radio" name="q19_fruits_veg_frequency" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q20 -->
+      <div class="question-block" id="block_q20_fast_food_frequency">
+        <label class="question-label">
+          Q20. How often do you consume fast food, packaged food, or junk food?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Daily", "3–5 times per week", "Once or twice a week", "Occasionally", "Rarely / Never"] %}
+          <label class="custom-option">
+            <input type="radio" name="q20_fast_food_frequency" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation for Section 5 -->
+      <div class="survey-nav-bar">
+        <button type="button" class="btn btn-secondary prev-step-btn" data-prev="4">&larr; Back</button>
+        <button type="button" class="btn btn-primary next-step-btn" data-next="6">Next: Section 6 &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 6 — MEDICAL CHECKUPS AND TREATMENT
+         ========================================== -->
+    <div class="survey-section-card" data-section="6">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Section 6</span>
+        <h2 class="section-heading-title">Medical Checkups and Treatment</h2>
+      </div>
+
+      <!-- Q21 -->
+      <div class="question-block" id="block_q21_routine_health_checkup">
+        <label class="question-label">
+          Q21. How often do you undergo a routine health check-up?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Every 6 months", "Once a year", "Every 2–3 years", "Only when unwell", "Never"] %}
+          <label class="custom-option">
+            <input type="radio" name="q21_routine_health_checkup" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q22 -->
+      <div class="question-block" id="block_q22_blood_sugar_test_frequency">
+        <label class="question-label">
+          Q22. How often do you get your blood sugar (glucose) level tested?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Monthly", "Every 3–6 months", "Annually", "Only on doctor's advice", "Never tested"] %}
+          <label class="custom-option">
+            <input type="radio" name="q22_blood_sugar_test_frequency" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q23 -->
+      <div class="question-block" id="block_q23_healthcare_accessibility">
+        <label class="question-label">
+          Q23. How accessible is a healthcare facility (hospital / clinic / PHC) from your home?
+        </label>
+        <div class="options-stack">
+          {% for opt in ["Within 1 km (easily accessible)", "1 – 5 km (moderately accessible)", "5 – 15 km (difficult to reach)", "More than 15 km (very difficult)"] %}
+          <label class="custom-option">
+            <input type="radio" name="q23_healthcare_accessibility" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q24 -->
+      <div class="question-block" id="block_q24_medicines_access">
+        <label class="question-label">
+          Q24. Do you have easy access to medicines for diabetes or chronic diseases?
+        </label>
+        <div class="options-stack">
+          {% for opt in ["Yes, always available and affordable", "Yes, available but expensive", "Irregular supply / sometimes available", "No, difficult to access", "Not applicable"] %}
+          <label class="custom-option">
+            <input type="radio" name="q24_medicines_access" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation for Section 6 -->
+      <div class="survey-nav-bar">
+        <button type="button" class="btn btn-secondary prev-step-btn" data-prev="5">&larr; Back</button>
+        <button type="button" class="btn btn-primary next-step-btn" data-next="7">Next: Section 7 &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 7 — IMPACT ON DAILY LIFE
+         ========================================== -->
+    <div class="survey-section-card" data-section="7">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Section 7</span>
+        <h2 class="section-heading-title">Impact on Daily Life</h2>
+      </div>
+
+      <!-- Q25 -->
+      <div class="question-block" id="block_q25_daily_life_impact">
+        <label class="question-label">
+          Q25. Has diabetes or any chronic disease affected your work, studies, or daily routine?
+        </label>
+        <div class="options-stack">
+          {% for opt in ["Yes, severely affected", "Yes, mildly affected", "Not significantly affected", "No, not affected", "Not applicable (not diagnosed)"] %}
+          <label class="custom-option">
+            <input type="radio" name="q25_daily_life_impact" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q26 -->
+      <div class="question-block" id="block_q26_monthly_expenditure">
+        <label class="question-label">
+          Q26. What is the approximate monthly expenditure on treatment / medicines for chronic disease? (in ₹)
+        </label>
+        <div class="options-grid">
+          {% for opt in ["₹0 (No cost / Government supply)", "₹1 – ₹500", "₹501 – ₹2,000", "₹2,001 – ₹5,000", "More than ₹5,000"] %}
+          <label class="custom-option">
+            <input type="radio" name="q26_monthly_expenditure" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q27 -->
+      <div class="question-block" id="block_q27_challenges">
+        <label class="question-label">
+          Q27. What are the main challenges you face in managing diabetes or chronic diseases? (Select all that apply)
+        </label>
+        <div class="options-grid">
+          {% for opt in ["High cost of medicines / treatment", "Lack of nearby healthcare facilities", "Lack of awareness / information", "Busy lifestyle / No time", "Side effects of medicines", "Difficulty following diet restrictions", "No major challenges"] %}
+          <label class="custom-option">
+            <input type="checkbox" name="q27_challenges" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation for Section 7 -->
+      <div class="survey-nav-bar">
+        <button type="button" class="btn btn-secondary prev-step-btn" data-prev="6">&larr; Back</button>
+        <button type="button" class="btn btn-primary next-step-btn" data-next="8">Next: Section 8 &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 8 — COMMUNITY AWARENESS
+         ========================================== -->
+    <div class="survey-section-card" data-section="8">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Section 8</span>
+        <h2 class="section-heading-title">Community Awareness</h2>
+      </div>
+
+      <!-- Q28 -->
+      <div class="question-block" id="block_q28_community_awareness_programs">
+        <label class="question-label">
+          Q28. Are health or diabetes awareness programmes conducted in your community / area?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Yes, regularly", "Yes, but rarely", "No, never", "Not aware of any"] %}
+          <label class="custom-option">
+            <input type="radio" name="q28_community_awareness_programs" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Q29 -->
+      <div class="question-block" id="block_q29_community_knowledge_level">
+        <label class="question-label">
+          Q29. Do you think people in your community have enough knowledge about diabetes and chronic diseases?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Yes, very well informed", "Somewhat informed", "Poorly informed", "Not informed at all"] %}
+          <label class="custom-option">
+            <input type="radio" name="q29_community_knowledge_level" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation for Section 8 -->
+      <div class="survey-nav-bar">
+        <button type="button" class="btn btn-secondary prev-step-btn" data-prev="7">&larr; Back</button>
+        <button type="button" class="btn btn-primary next-step-btn" data-next="9">Next: Section 9 &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 9 — SUGGESTIONS
+         ========================================== -->
+    <div class="survey-section-card" data-section="9">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Section 9</span>
+        <h2 class="section-heading-title">Suggestions &amp; Future Participation</h2>
+      </div>
+
+      <!-- Q30 -->
+      <div class="question-block" id="block_q30_prevention_measures">
+        <label class="question-label" for="q30_prevention_measures">
+          Q30. In your opinion, what measures can help prevent diabetes and chronic diseases in your community?
+        </label>
+        <textarea id="q30_prevention_measures" name="q30_prevention_measures" class="form-input-text form-textarea" placeholder="Enter your ideas (e.g., free testing camps, walking tracks, nutrition talks)..."></textarea>
+      </div>
+
+      <!-- Q31 -->
+      <div class="question-block" id="block_q31_healthcare_suggestions">
+        <label class="question-label" for="q31_healthcare_suggestions">
+          Q31. Do you have any suggestions for improving healthcare services in your area?
+        </label>
+        <textarea id="q31_healthcare_suggestions" name="q31_healthcare_suggestions" class="form-input-text form-textarea" placeholder="Enter suggestions for local clinic, doctors, or medicine supplies..."></textarea>
+      </div>
+
+      <!-- Q32 -->
+      <div class="question-block" id="block_q32_future_participation">
+        <label class="question-label">
+          Q32. Would you be willing to participate in future community health programmes or surveys?
+        </label>
+        <div class="options-grid">
+          {% for opt in ["Yes", "No", "Not Sure / Maybe"] %}
+          <label class="custom-option">
+            <input type="radio" name="q32_future_participation" value="{{ opt }}">
+            <span class="option-indicator"></span>
+            <span class="option-text">{{ opt }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation for Section 9 -->
+      <div class="survey-nav-bar">
+        <button type="button" class="btn btn-secondary prev-step-btn" data-prev="8">&larr; Back</button>
+        <button type="button" class="btn btn-primary next-step-btn" data-next="10">Next: Informed Consent &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 10 — DECLARATION & CONSENT
+         ========================================== -->
+    <div class="survey-section-card" data-section="10">
+      <div class="section-header-box">
+        <span class="section-badge-tag">Verification &amp; Submission</span>
+        <h2 class="section-heading-title">Declaration by Respondent</h2>
+      </div>
+
+      <div class="consent-box">
+        <p class="consent-statement">
+          <strong>Official Declaration:</strong> I hereby confirm that the information provided above is true and accurate to the best of my knowledge. I understand that this data will be used solely for community health research and awareness purposes under the Community Survey Project (CSP).
+        </p>
+        <label class="consent-label" for="consent_given">
+          <input type="checkbox" id="consent_given" name="consent_given" value="1" class="consent-checkbox" required>
+          <span>I have read the declaration, provide my informed consent, and verify my answers. <span class="mandatory-star">*</span></span>
+        </label>
+      </div>
+
+      <!-- Surveyor Info (Optional field metadata) -->
+      <div style="margin-top: 2rem; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+        <h4 style="font-size: 0.95rem; color: var(--navy-dark); margin-bottom: 8px;">FOR OFFICIAL / SURVEYOR USE ONLY (Optional)</h4>
+        <div class="options-grid">
+          <div>
+            <label style="font-size: 0.85rem; font-weight: 600;" for="surveyor_name">Surveyor Name:</label>
+            <input type="text" id="surveyor_name" name="surveyor_name" class="form-input-text" placeholder="Name of volunteer/surveyor (Optional)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Final Action Buttons -->
+      <div class="survey-nav-bar">
+        <button type="button" class="btn btn-secondary prev-step-btn" data-prev="9">&larr; Back</button>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-outline-teal" id="reviewAnswersBtn">
+            🔍 Review All Answers
+          </button>
+          <button type="submit" class="btn btn-primary" id="finalSubmitBtn">
+            🚀 Submit Survey
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<!-- Review Answers Modal -->
+<div class="modal-backdrop" id="reviewModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 class="modal-title">Review Your Responses</h3>
+      <button type="button" class="modal-close-btn" id="closeReviewModal">&times;</button>
+    </div>
+    <div class="modal-body" id="reviewModalBody">
+      <!-- Dynamically filled with JavaScript -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="editSurveyBtn">Edit Answers</button>
+      <button type="button" class="btn btn-primary" id="confirmAndSubmitBtn">Looks Good &amp; Submit</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/survey.js') }}"></script>
+{% endblock %}

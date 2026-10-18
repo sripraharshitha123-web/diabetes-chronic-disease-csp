@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - CSP Portal{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 480px; padding: 4.5rem 1.25rem;">
+  <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-lg);">
+    
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div class="brand-icon-box" style="margin: 0 auto 1rem; width: 56px; height: 56px; font-size: 28px;">
+        🔐
+      </div>
+      <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--navy-dark);">
+        Administrator Login
+      </h1>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
+        Restricted access for authorized CSP research investigators
+      </p>
+    </div>
+
+    <!-- Security notice without displaying any credentials -->
+    <div style="background: var(--teal-light); border: 1px solid var(--teal-border); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--teal-deep);">
+      <strong>🛡️ Authorized Access Only:</strong><br>
+      Please sign in using the administrator credentials configured in your environment.
+    </div>
+
+    <form method="POST" action="{{ url_for('login') }}">
+      <div style="margin-bottom: 1.25rem;">
+        <label for="username" style="display: block; font-size: 0.9rem; font-weight: 700; color: var(--navy-dark); margin-bottom: 6px;">
+          Username
+        </label>
+        <input type="text" id="username" name="username" class="form-input-text" placeholder="Enter admin username" required autofocus autocomplete="username">
+      </div>
+
+      <div style="margin-bottom: 1.75rem;">
+        <label for="password" style="display: block; font-size: 0.9rem; font-weight: 700; color: var(--navy-dark); margin-bottom: 6px;">
+          Password
+        </label>
+        <input type="password" id="password" name="password" class="form-input-text" placeholder="••••••••••••" required autocomplete="current-password">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
+        Sign In to Research Dashboard &rarr;
+      </button>
+    </form>
+
+    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.82rem; color: var(--text-light);">
+      Protected under CSP Academic Data Governance &amp; Ethics Policy.
+    </div>
+
+  </div>
+</div>
+{% endblock %}
